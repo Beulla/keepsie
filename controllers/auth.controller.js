@@ -53,6 +53,7 @@ exports.login=async(req,res)=>{
         });
         if (user) {
           let comparePasswords=await argon2.verify(user.password,req.body.password)
+          console.log(comparePasswords)
           
           if(comparePasswords){
             const secretKey="1234"
@@ -150,7 +151,7 @@ exports.resetPassword=async(req,res)=>{
         used:1
       },{where:{email:req.body.email}})
       let hashNewPassword=await argon2.hash(req.body.password1)
-       Users.update({
+      await Users.update({
         password:hashNewPassword
       },{where:{email:req.query.email}})
       res.send({message:"Successfully reset password"})
